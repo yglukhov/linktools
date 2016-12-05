@@ -6,11 +6,11 @@ proc libHasSymbol*(lib, sym: static[string]): bool {.compileTime.} =
     res == "true"
 
 when isMainModule:
-    import osproc, cligen
+    import osproc, os, cligen
     proc libhassym(lib, sym: string) =
-        writeFile("/tmp/libhassymcheck.nim", "proc " & sym & "() {.importc.}\l" & sym & "()")
-        let (_, r) = execCmdEx("nim c --passL:-l" & lib & " /tmp/libhassymcheck")
-        if r == 0:
-            echo "true"
+        let tmpFile = getTempDir() / "libhassymcheck.nim"
+        writeFile(tmpFile, "proc " & sym & "() {.importc.}\l" & sym & "()")
+        let (_, r) = execCmdEx("nim c --passL:-l" & lib & " " & quoteShell(tmpFile))
+        if r == 0: echo "true"
 
     dispatchMulti([libhassym])
