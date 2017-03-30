@@ -13,4 +13,4 @@ when isMainModule:
         let (_, r) = execCmdEx("nim c --passL:-l" & lib & " " & quoteShell(tmpFile))
         if r == 0: echo "true"
 
-    dispatchMulti("?", [libhassym])
+    dispatchMulti([libhassym])
