@@ -1,7 +1,7 @@
 import strutils
 
 proc libHasSymbol*(lib, sym: static[string]): bool {.compileTime.} =
-    const cmdline = "linktools libhassym " & lib & " " & sym
+    const cmdline = "linktools libhassym -l=" & lib & " -s=" & sym
     const res = staticExec(cmdline, cache = cmdline).strip()
     res == "true"
 
